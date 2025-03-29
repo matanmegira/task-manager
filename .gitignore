@@ -1,0 +1,44 @@
+# === Node.js ===
+node_modules/
+dist/
+build/
+*.log
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+pnpm-debug.log*
+
+# === TypeScript ===
+*.tsbuildinfo
+
+# === Angular ===
+.angular/
+.angular/cache/
+.angular/config.json
+.angular/local/
+coverage/
+*.tgz
+
+# === Output ===
+out/
+tmp/
+temp/
+.cache/
+
+# === Environment Variables ===
+.env
+.env.*.local
+
+# === SSL Keys (dev) ===
+ssl.key
+ssl.cert
+
+# === Logs ===
+logs/
+*.log
+log.txt
+
+# === Editor / IDE ===
+.vscode/
+.idea/
+*.code-workspace

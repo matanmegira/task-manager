@@ -1,0 +1,54 @@
+<mat-card class="task-card">
+    <h2 class="task-title">Task Manager</h2>
+  
+    <form #taskForm="ngForm" (ngSubmit)="addTask(taskForm)" class="task-form">
+      <mat-form-field appearance="outline" class="task-field">
+        <mat-label>Title</mat-label>
+        <input matInput [(ngModel)]="newTask.title" name="title" required />
+      </mat-form-field>
+  
+      <mat-form-field appearance="outline" class="task-field">
+        <mat-label>Description</mat-label>
+        <textarea matInput [(ngModel)]="newTask.description" name="description" required></textarea>
+      </mat-form-field>
+  
+      <button mat-raised-button color="primary" type="submit">Add Task</button>
+    </form>
+  
+    <div class="task-list">
+      <mat-card class="task-item" *ngFor="let task of tasks">
+        <div *ngIf="!task.isEditing; else editMode">
+          <h3>{{ task.title }}</h3>
+          <p>{{ task.description }}</p>
+          <button mat-icon-button color="primary" (click)="startEdit(task)">
+            <mat-icon>edit</mat-icon>
+          </button>
+          <button mat-icon-button color="warn" (click)="deleteTask(task.id)">
+            <mat-icon>delete</mat-icon>
+          </button>
+        </div>
+  
+        <ng-template #editMode>
+          <form (ngSubmit)="updateTask(task)" class="edit-form">
+            <mat-form-field appearance="outline" class="task-field">
+              <mat-label>Title</mat-label>
+              <input matInput [(ngModel)]="task.title" name="editTitle{{ task.id }}" required />
+            </mat-form-field>
+  
+            <mat-form-field appearance="outline" class="task-field">
+              <mat-label>Description</mat-label>
+              <textarea matInput [(ngModel)]="task.description" name="editDescription{{ task.id }}" required></textarea>
+            </mat-form-field>
+  
+            <div class="edit-actions">
+              <button mat-button color="primary" type="submit">Save</button>
+              <button mat-button type="button" (click)="cancelEdit(task)">Cancel</button>
+            </div>
+          </form>
+        </ng-template>
+      </mat-card>
+    </div>
+  
+    <button mat-stroked-button color="accent" (click)="logout()" class="logout-button">Logout</button>
+  </mat-card>
+  

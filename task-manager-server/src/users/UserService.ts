@@ -17,7 +17,7 @@ export class UserService {
     const refreshToken = tokenService.generateRefreshToken(username);
     res.cookie('refreshToken', refreshToken, {
       httpOnly: true, sameSite: 'strict', secure: true,
-      maxAge: 7 * 24 * 60 * 60 * 1000
+      maxAge:  7 * 24 * 60 * 60 * 1000
     });
     res.status(201).json({ token: accessToken });
   }
@@ -33,7 +33,7 @@ export class UserService {
     const refreshToken = tokenService.generateRefreshToken(username);
     res.cookie('refreshToken', refreshToken, {
       httpOnly: true, sameSite: 'strict', secure: true,
-      maxAge: 7 * 24 * 60 * 60 * 1000
+      maxAge:  7 * 24 * 60 * 60 * 1000
     });
     res.json({ token: accessToken });
   }

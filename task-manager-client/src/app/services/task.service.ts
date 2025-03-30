@@ -1,6 +1,4 @@
 import { Injectable } from '@angular/core';
-import axios from 'axios';
-import { AuthService } from './auth.service';
 import API from '../utils/axios-instance';
 
 @Injectable({
@@ -8,7 +6,6 @@ import API from '../utils/axios-instance';
 })
 export class TaskService {
   
-
   async getTasks() {
     const res = await API.get(`/tasks`);
     return res.data;

@@ -10,8 +10,6 @@ export class TaskService {
 
   getTasks(req: AuthenticatedRequest, res: Response) {
     const username = req.username;
-    if (!username) return res.status(401).json({ error: 'Unauthorized' });
-
     const raw = tasks[username] || [];
     const decrypted = raw.map(t => ({
       ...t,
@@ -68,8 +66,6 @@ export class TaskService {
 
   deleteTask(req: AuthenticatedRequest, res: Response) {
     const username = req.username;
-    if (!username) return res.status(401).json({ error: 'Unauthorized' });
-
     tasks[username] = (tasks[username] || []).filter(t => t.id !== req.params.id);
     res.json({ message: 'Task deleted' });
   }

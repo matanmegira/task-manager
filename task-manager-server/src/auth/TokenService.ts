@@ -13,6 +13,6 @@ export class TokenService {
 
   generateAccessTokenFromRefresh(refreshToken: string): string {
     const decoded = jwt.verify(refreshToken, config.jwtSecret) as { username: string };
-    return jwt.sign({ username: decoded.username }, config.jwtSecret, { expiresIn: '1h' });
-  }  
+    return this.generateAccessToken(decoded.username);
+  }
 }

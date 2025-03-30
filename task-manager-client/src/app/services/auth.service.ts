@@ -9,7 +9,7 @@ import { environment } from 'src/environments/environment';
 export class AuthService {
 
   async register(username: string, password: string) {
-    const res =  await axios.post(`${environment.apiUrl}/register`, { username, password });
+    const res =  await axios.post(`${environment.apiUrl}/register`, { username, password }, { withCredentials: true });
     if (res.data.token) {
       localStorage.setItem('token', res.data.token);
     }
@@ -17,7 +17,7 @@ export class AuthService {
   }
 
   async login(username: string, password: string) {
-    const res = await axios.post(`${environment.apiUrl}/login`, { username, password });
+    const res = await axios.post(`${environment.apiUrl}/login`, { username, password }, { withCredentials: true });
     if (res.data.token) {
       localStorage.setItem('token', res.data.token);
     }

@@ -1,42 +1,44 @@
 import axios from 'axios';
 import { environment  } from 'src/environments/environment';
+
+function isTokenAboutToExpire(token: string): boolean {
+  try {
+    const payload = JSON.parse(atob(token.split('.')[1]));
+    const exp = payload.exp;
+    const now = Math.floor(Date.now() / 1000);
+    return exp - now < 60; 
+  } catch {
+    return true; 
+  }
+}
+
 const API = axios.create({
   baseURL: environment.apiUrl,
   withCredentials: true 
 });
 
-API.interceptors.request.use((config) => {
-  const token = localStorage.getItem('token');
-  if (token) {
-    config.headers['Authorization'] = `Bearer ${token}`;
-  }
-  return config;
-});
+API.interceptors.request.use(
+  async (config) => {
+    const token = localStorage.getItem('token');
 
-API.interceptors.response.use(
-  (res) => res,
-  async (err) => {
-    const originalRequest = err.config;
-
-    if (err.response?.status === 401 && !originalRequest._retry) {
-      originalRequest._retry = true;
-
+    if (token && isTokenAboutToExpire(token)) {
       try {
         const res = await axios.post(`${environment.apiUrl}/refresh-token`, {}, { withCredentials: true });
         const newToken = res.data.token;
         localStorage.setItem('token', newToken);
-
-        originalRequest.headers['Authorization'] = `Bearer ${newToken}`;
-        return API(originalRequest);
-      } catch (refreshErr) {
+        config.headers['Authorization'] = `Bearer ${newToken}`;
+      } catch (err) {
         localStorage.removeItem('token');
-        window.location.href = '/login'; 
-        return Promise.reject(refreshErr);
+        window.location.href = '/login';
+        return Promise.reject(err);
       }
+    } else if (token) {
+      config.headers['Authorization'] = `Bearer ${token}`;
     }
 
-    return Promise.reject(err);
-  }
+    return config;
+  },
+  (error) => Promise.reject(error)
 );
 
 export default API;
